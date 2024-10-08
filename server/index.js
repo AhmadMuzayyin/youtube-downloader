@@ -33,6 +33,7 @@ app.get('/download', async (req, res) => {
     try {
         const info = await ytdl.getInfo(url, { agent });
         const title = info.videoDetails.title;
+        console.log(info.videoDetails.title);
         res.header('Content-Disposition', `attachment; filename="${title}.mp4"`);
         ytdl(url, {
             format: 'mp4',

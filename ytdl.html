@@ -74,7 +74,7 @@
             startLoading('convert');
             const videoUrl = document.getElementById('videoURL').value;
             if (!videoUrl) {
-                displayMessage("Please enter a valid URL", 'error');
+                displayMessage("Oops..", "Please enter a valid URL", 'error');
                 return;
             }
             try {
@@ -91,10 +91,12 @@
                     var btnDownload = document.getElementById('download');
                     btnDownload.addEventListener('click', async () => {
                         startLoading('download');
-                        displayMessage("Downloading...\nDon't close this page", 'info');
+                        displayMessage("Yeay..", "The video is downloading,Don't close this page", 'info');
                         const response = await fetch(`https://api.lenta.my.id/download?url=${videoUrl}`);
                         if (!response.ok) {
-                            throw new Error(`Network response was not ok: ${response.statusText}`);
+                            displayMessage("Oops..", 'The video cannot be downloaded', 'error');
+                            stopLoading('download');
+                            return;
                         }
                         const blob = await response.blob();
                         const url = window.URL.createObjectURL(blob);
@@ -107,23 +109,24 @@
                         window.URL.revokeObjectURL(url);
                         a.remove();
                         stopLoading('download');
-                        displayMessage("Download Success", 'success');
+                        displayMessage("Yeay..", 'The video has been downloaded', 'success');
                     });
                     document.getElementById('rowImage').classList.remove('d-none');
                     stopLoading('convert');
                 } else {
-                    displayMessage("Please enter a valid URL", 'error');
+                    displayMessage("Oops..", fetchResponse.data, 'error');
                     stopLoading('convert');
                 }
             } catch (error) {
-                displayMessage("Error fetching data from API", 'error');
+                displayMessage("Oops..", 'Error fetching data from API', 'error');
                 stopLoading('convert');
             }
         });
 
-        function displayMessage(message, icon) {
+        function displayMessage(message, text = "", icon) {
             Swal.fire({
                 title: message,
+                text: text,
                 icon: icon,
                 showConfirmButton: false,
                 timer: 1500
