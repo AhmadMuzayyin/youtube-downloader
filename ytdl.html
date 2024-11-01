@@ -78,7 +78,7 @@
                 return;
             }
             try {
-                const response = await fetch(`https://api.lenta.my.id/get?url=${videoUrl}`);
+                const response = await fetch(`http://localhost:7050/get?url=${videoUrl}`);
 
                 const fetchResponse = await response.json();
                 if (fetchResponse.status === "ok") {
@@ -92,7 +92,7 @@
                     btnDownload.addEventListener('click', async () => {
                         startLoading('download');
                         displayMessage("Yeay..", "The video is downloading,Don't close this page", 'info');
-                        const response = await fetch(`https://api.lenta.my.id/download?url=${videoUrl}`);
+                        const response = await fetch(`http://localhost:7050/download?url=${videoUrl}`);
                         if (!response.ok) {
                             displayMessage("Oops..", 'The video cannot be downloaded', 'error');
                             stopLoading('download');
